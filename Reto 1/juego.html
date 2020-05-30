@@ -1,0 +1,66 @@
+<script>
+    const dado = {
+        saldo: 5,
+        solicitarDatos: true,
+        valorApostado: 5,
+        montoApostado: 2,
+        config: {
+            valorMinimo: 1,
+            valorMaximo: 6
+        },
+        jugar: () => {
+            if (dado.saldo == 0) {
+                alert('Usted no cuenta con saldo disponible');
+                return;
+            }
+            if (dado.solicitarDatos) {
+                let volverAPreguntar = true;
+                let tieneSaldoSuficiente = false;
+                let montoApuestaPositivo = false;
+                let valorApuestaCorrecto = false;
+                do {
+                    if (!valorApuestaCorrecto) {
+                        dado.valorApostado = parseInt(prompt(`Ingrese el valor de la apuesta(del ${dado.config.valorMinimo} al ${dado.config.valorMaximo})`));
+                    }
+                    if (!tieneSaldoSuficiente || !montoApuestaPositivo) {
+                        dado.montoApostado = parseInt(prompt(`Ingrese el monto de la apuesta(saldo disponible: ${dado.saldo})`));
+                    }
+                    valorApuestaCorrecto = dado.valorApostado >= dado.config.valorMinimo && dado.valorApostado <= dado.config.valorMaximo;
+                    montoApuestaPositivo = dado.montoApostado > 0;
+                    tieneSaldoSuficiente = dado.montoApostado <= dado.saldo;
+                    if (!valorApuestaCorrecto) {
+                        alert(`El valor de la apuesta debe ser entre el ${dado.config.valorMinimo} y el ${dado.config.valorMaximo}`);
+                        continue;
+                    }
+                    if (!montoApuestaPositivo) {
+                        alert(`El monto de la apuesta debe ser mayor que cero (0)`);
+                        continue;
+                    }
+                    if (!tieneSaldoSuficiente) {
+                        alert(`El monto de la apuesta debe ser menor al saldo: ${dado.saldo}`);
+                        continue;
+                    }
+                    volverAPreguntar = !confirm(`Valor ingresado: ${dado.valorApostado}\nMonto ingresado:${dado.montoApostado}\n¿Empezar con el juego?`);
+                } while (volverAPreguntar);
+            }
+            let valorAleatorio = Math.floor((Math.random() * dado.config.valorMaximo) + dado.config.valorMinimo);
+            console.log(`valor del dado: ${valorAleatorio}`);
+            console.log(`valor apostado: ${dado.valorApostado}`);
+            console.log(`monto apostado: ${dado.montoApostado}`);
+            console.log(`saldo: ${dado.saldo}`);
+            let resultado = dado.valorApostado == valorAleatorio ? "G" : "P";
+
+            let montoResultado = resultado == "G" ? dado.montoApostado * 2 : dado.montoApostado * -1;
+
+            dado.saldo = dado.saldo + montoResultado;
+
+            console.log(`Usted ha ${resultado == "G" ? "ganado" : "perdido"}`);
+
+            console.log(`Saldo disponible: ${dado.saldo}`);
+
+        }
+    }
+
+    dado.jugar();
+    console.log(dado);
+</script>

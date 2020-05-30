@@ -1,0 +1,72 @@
+<script>
+    const cesar = {
+        cipherNumber: 1,
+        cipherText: 'Hola Mundoz',
+        textEncode: 'Ipmb Nvoepa',
+        config: {
+            codeKey: {
+                upper: Array(26).fill().map((x, i) => i + 97),
+                lower: Array(26).fill().map((x, i) => i + 65),
+                all: function() {
+                    return this.upper.concat(this.lower);
+                },
+                findKey: function(keyCode) {
+                    let keyFind = "";
+                    let objCodeKey = Object.assign({}, this);
+                    for (key in objCodeKey) {
+                        let value = objCodeKey[key];
+                        if (typeof value != "function") {
+                            if (value.includes(keyCode)) keyFind = key;
+                            if (keyFind != '') break;
+                        }
+                    }
+                    return keyFind;
+                }
+            }
+        },
+        encrypt: (cipherNumber = cesar.cipherNumber, cipherText = cesar.cipherText) => {
+            let arreglo = cipherText.split('');
+            let arregloChange = [];
+            for (key in arreglo) {
+                let char = arreglo[key];
+                let keyCode = char.charCodeAt(0);
+                let keyFromArrayConfig = cesar.config.codeKey.findKey(keyCode);
+                let charIsLetter = keyFromArrayConfig != "";
+                let newChar = char;
+                if (charIsLetter) {
+                    let firstKeyCode = cesar.config.codeKey[keyFromArrayConfig][0];
+                    let lastIndexKeyCode = cesar.config.codeKey[keyFromArrayConfig].length - 1;
+                    let lastKeyCode = cesar.config.codeKey[keyFromArrayConfig][lastIndexKeyCode];
+                    let newKeyCode = keyCode + (charIsLetter ? cipherNumber : 0);
+                    if (newKeyCode > lastKeyCode) newKeyCode = firstKeyCode + cipherNumber - 1;
+                    newChar = String.fromCharCode(newKeyCode);
+                }
+                arregloChange.push(newChar);
+            }
+            return arregloChange.join('');
+        },
+        decrypt: (cipherNumber = cesar.cipherNumber, textEncode = cesar.textEncode) => {
+            let arreglo = textEncode.split('');
+            let arregloChange = [];
+            for (key in arreglo) {
+                let char = arreglo[key];
+                let keyCode = char.charCodeAt(0);
+                let keyFromArrayConfig = cesar.config.codeKey.findKey(keyCode);
+                let charIsLetter = keyFromArrayConfig != "";
+                let newChar = char;
+                if (charIsLetter) {
+                    let firstKeyCode = cesar.config.codeKey[keyFromArrayConfig][0];
+                    let lastIndexKeyCode = cesar.config.codeKey[keyFromArrayConfig].length - 1;
+                    let lastKeyCode = cesar.config.codeKey[keyFromArrayConfig][lastIndexKeyCode];
+                    let newKeyCode = keyCode - (charIsLetter ? cipherNumber : 0);
+                    if (newKeyCode < firstKeyCode) newKeyCode = lastKeyCode - cipherNumber + 1;
+                    newChar = String.fromCharCode(newKeyCode);
+                }
+                arregloChange.push(newChar);
+            }
+            return arregloChange.join('');
+        }
+    }
+    console.log(cesar.encrypt());
+    console.log(cesar.decrypt());
+</script>
