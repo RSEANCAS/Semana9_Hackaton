@@ -1,8 +1,8 @@
 <script>
     const cesar = {
-        cipherNumber: 1,
-        cipherText: 'Hola Mundoz',
-        textEncode: 'Ipmb Nvoepa',
+        cipherNumber: 5,
+        cipherText: 'Hola MundoVWXYZ',
+        textEncode: 'Mtqf RzsitABCDE',
         config: {
             codeKey: {
                 upper: Array(26).fill().map((x, i) => i + 97),
@@ -38,7 +38,10 @@
                     let lastIndexKeyCode = cesar.config.codeKey[keyFromArrayConfig].length - 1;
                     let lastKeyCode = cesar.config.codeKey[keyFromArrayConfig][lastIndexKeyCode];
                     let newKeyCode = keyCode + (charIsLetter ? cipherNumber : 0);
-                    if (newKeyCode > lastKeyCode) newKeyCode = firstKeyCode + cipherNumber - 1;
+                    if (newKeyCode > lastKeyCode) {
+                        let difference = newKeyCode - lastKeyCode;
+                        newKeyCode = firstKeyCode + difference - 1;
+                    }
                     newChar = String.fromCharCode(newKeyCode);
                 }
                 arregloChange.push(newChar);
@@ -59,7 +62,10 @@
                     let lastIndexKeyCode = cesar.config.codeKey[keyFromArrayConfig].length - 1;
                     let lastKeyCode = cesar.config.codeKey[keyFromArrayConfig][lastIndexKeyCode];
                     let newKeyCode = keyCode - (charIsLetter ? cipherNumber : 0);
-                    if (newKeyCode < firstKeyCode) newKeyCode = lastKeyCode - cipherNumber + 1;
+                    if (newKeyCode < firstKeyCode) {
+                        let difference = newKeyCode - firstKeyCode;
+                        newKeyCode = lastKeyCode + difference + 1;
+                    }
                     newChar = String.fromCharCode(newKeyCode);
                 }
                 arregloChange.push(newChar);
