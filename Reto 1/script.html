@@ -1,0 +1,48 @@
+<script>
+    const cesar = {
+            cipherNumber: 1,
+            cipherText: 'Hola Mundo',
+            textEncode: 'Ipmb Nvoep',
+            utilities: {
+                regexp: {
+                    letters: () => /[a-zA-Z]/
+                }
+            },
+            encrypt: (cipherNumber = cesar.cipherNumber, cipherText = cesar.cipherText) => {
+                let arreglo = cipherText.split('');
+                let arregloChange = [];
+                for (key in arreglo) {
+                    let char = arreglo[key];
+                    let charIsLetter = cesar.utilities.regexp.letters().exec(char);
+                    let keyCode = char.charCodeAt(0);
+                    let newKeyCode = keyCode + (charIsLetter ? cipherNumber : 0);
+                    let newChar = String.fromCharCode(newKeyCode);
+                    arregloChange.push(newChar);
+                    // console.log(newChar);
+                }
+
+                return arregloChange.join('');
+            },
+            decrypt: (cipherNumber = cesar.cipherNumber, textEncode = cesar.textEncode) => {
+                console.log()
+                let arreglo = textEncode.split('');
+                let arregloChange = [];
+                for (key in arreglo) {
+                    let char = arreglo[key];
+                    let charIsLetter = cesar.utilities.regexp.letters().exec(char);
+                    let keyCode = char.charCodeAt(0);
+                    let newKeyCode = keyCode - (charIsLetter ? cipherNumber : 0);
+                    let newChar = String.fromCharCode(newKeyCode);
+                    arregloChange.push(newChar);
+                    // console.log(newChar);
+                }
+
+                return arregloChange.join('');
+            }
+        }
+        // cesar.encrypt();
+        // cesar.decrypt();
+
+    console.log(cesar.encrypt());
+    console.log(cesar.decrypt());
+</script>
